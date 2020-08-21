@@ -10,6 +10,8 @@
 #include <linux/sizes.h>
 #include <asm/arch/stm32.h>
 
+#define CONFIG_SYS_MMCSD_RAW_MODE_KERNEL_SECTOR 5154
+
 #ifndef CONFIG_TFABOOT
 /* PSCI support */
 #define CONFIG_ARMV7_SECURE_BASE		STM32_SYSRAM_BASE

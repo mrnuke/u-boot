@@ -8,6 +8,7 @@
 #include <init.h>
 #include <asm/io.h>
 #include <asm/arch/sys_proto.h>
+#include <asm/gpio.h>
 #include <linux/bitops.h>
 #include <linux/delay.h>
 #include "../common/stpmic1.h"
@@ -28,6 +29,43 @@ int board_early_init_f(void)
 
 	return 0;
 }
+
+#if IS_ENABLED(CONFIG_SPL_OS_BOOT)
+int spl_start_uboot(void)
+{
+	ofnode node;
+	struct gpio_desc gpio;
+	int boot_uboot = 1;
+
+	node = ofnode_path("/config");
+	if (!ofnode_valid(node)) {
+		pr_warn("%s: no /config node?\n", __func__);
+		return 0;
+	}
+	if (gpio_request_by_name_nodev(node, "st,fastboot-gpios", 0,
+		&gpio, GPIOD_IS_IN)) {
+		pr_warn("%s: could not find a /config/st,fastboot-gpios\n",
+		      __func__);
+		return 1;
+		}
+
+		boot_uboot = dm_gpio_get_value(&gpio);
+	dm_gpio_free(NULL, &gpio);
+
+	return boot_uboot;
+}
+
+#if IS_ENABLED(CONFIG_ARMV7_NONSEC)
+/*
+ * A bit of a hack, but armv7_boot_nonsec() is provided by bootm.c. This is not
+ * available in SPL, so we have to provide an implementation.
+ */
+bool armv7_boot_nonsec(void)
+{
+	return 0;
+}
+#endif /* CONFIG_ARMV7_NONSEC */
+#endif /* CONFIG_SPL_OS_BOOT */
 
 #ifdef CONFIG_DEBUG_UART_BOARD_INIT
 void board_debug_uart_init(void)
