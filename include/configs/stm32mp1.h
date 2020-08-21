@@ -16,6 +16,10 @@
 #define CONFIG_ARMV7_SECURE_MAX_SIZE		STM32_SYSRAM_SIZE
 #endif
 
+#define CONFIG_SYS_BAUDRATE_TABLE      { 9600, 19200, 38400, 57600, 115200, \
+					 230400, 460800, 921600, \
+					 1000000, 2000000 }
+
 /*
  * Configuration of the external SRAM memory used by U-Boot
  */
