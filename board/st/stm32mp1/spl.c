@@ -5,6 +5,7 @@
 
 #include <config.h>
 #include <common.h>
+#include <dm/device.h>
 #include <init.h>
 #include <asm/io.h>
 #include <asm/arch/sys_proto.h>
@@ -91,3 +92,12 @@ void board_debug_uart_init(void)
 #endif
 }
 #endif
+
+int board_fit_config_name_match(const char *name)
+{
+	if (of_machine_is_compatible("st,stm32mp157c-dk2"))
+		return !strstr(name, "stm32mp157c-dk2");
+
+	/* Okay, it's most likely an EV board */
+	return !strstr(name, "stm32mp157") + !strstr(name, "-ev");
+}
