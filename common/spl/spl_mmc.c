@@ -108,7 +108,7 @@ int mmc_load_image_raw_sector(struct spl_image_info *spl_image,
 end:
 	if (ret) {
 #ifdef CONFIG_SPL_LIBCOMMON_SUPPORT
-		puts("mmc_load_image_raw_sector: mmc block read error\n");
+		printf("mmc_load_image_raw_sector : %d\n", ret);
 #endif
 		return -1;
 	}
