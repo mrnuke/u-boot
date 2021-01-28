@@ -506,7 +506,7 @@ static int stm32mp_bsec_probe(struct udevice *dev)
 	 * only executed in U-Boot proper when TF-A is not used
 	 */
 
-	if (!IS_ENABLED(CONFIG_TFABOOT) && !IS_ENABLED(CONFIG_SPL_BUILD)) {
+	if (!IS_ENABLED(CONFIG_TFABOOT)) {
 		plat = dev_get_plat(dev);
 
 		for (otp = 57; otp <= BSEC_OTP_MAX_VALUE; otp++)
