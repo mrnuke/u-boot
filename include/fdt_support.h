@@ -119,6 +119,23 @@ static inline int fdt_fixup_memory_banks(void *blob, u64 start[], u64 size[],
 #endif
 
 void fdt_fixup_ethernet(void *fdt);
+
+/**
+ * Set the "mac-address" and "local-mac-address" of ethernet node
+ * The ethernet node is located from the "/aliases" section of the fdt. When
+ * 'ethnum' is positive, then the name is matched exactly, e.g "ethernet0".
+ * When ethnum is negative, the first ethernet alias is updated.
+ * Unlike fdt_fixup_ethernet(), this function only updates one ethernet node,
+ * and soes not use the "ethaddr" from the u-boot environment. This is useful,
+ * for example, in SPL, when the environment is not initialized or available.
+ *
+ * @param fdt		FDT blob to update
+ * @param ethnum	Ethernet device index, or negative for any ethernet
+ * @param mac_addr	Pointer to 6-byte array containing the MAC address
+ *
+ * @return 0 if ok, or -FDT_ERR_... on error
+ */
+int fdt_ethernet_set_macaddr(void *fdt, int ethnum, const uint8_t *mac_addr);
 int fdt_find_and_setprop(void *fdt, const char *node, const char *prop,
 			 const void *val, int len, int create);
 void fdt_fixup_qe_firmware(void *fdt);

@@ -592,6 +592,36 @@ void fdt_fixup_ethernet(void *fdt)
 	}
 }
 
+int fdt_ethernet_set_macaddr(void *fdt, int ethnum, const uint8_t *mac_addr)
+{
+	const char *path, *name;
+	int prop, aliases_node;
+	char eth_name[16] = "ethernet";
+
+	aliases_node = fdt_path_offset(fdt, "/aliases");
+	if (aliases_node < 0)
+		return aliases_node;
+
+	if (ethnum >= 0)
+		sprintf(eth_name, "ethernet%d", ethnum);
+
+	fdt_for_each_property_offset(prop, fdt, aliases_node) {
+		path = fdt_getprop_by_offset(fdt, prop, &name, NULL);
+		if (!strcmp(name, eth_name))
+			break;
+
+		path = NULL;
+	}
+
+	if (!path)
+		return -FDT_ERR_NOTFOUND;
+
+	do_fixup_by_path(fdt, path, "mac-address", mac_addr, 6, 0);
+	do_fixup_by_path(fdt, path, "local-mac-address", mac_addr, 6, 1);
+
+	return 0;
+}
+
 int fdt_record_loadable(void *blob, u32 index, const char *name,
 			uintptr_t load_addr, u32 size, uintptr_t entry_point,
 			const char *type, const char *os)
