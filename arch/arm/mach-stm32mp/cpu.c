@@ -10,6 +10,7 @@
 #include <cpu_func.h>
 #include <debug_uart.h>
 #include <env.h>
+#include <fdt_support.h>
 #include <init.h>
 #include <log.h>
 #include <misc.h>
@@ -616,6 +617,27 @@ __weak int setup_mac_address(void)
 #endif
 
 	return 0;
+}
+
+int stm32_fdt_setup_mac_addr(void *fdt)
+{
+	int ret;
+	uchar enetaddr[ARP_HLEN];
+
+	ret = stm32_read_otp_mac(enetaddr);
+	if (ret < 0)
+		return ret;
+
+	if (!is_valid_ethaddr(enetaddr)) {
+		printf("invalid MAC address in OTP\n");
+		return -EINVAL;
+	}
+
+	ret = fdt_ethernet_set_macaddr(fdt, 0, enetaddr);
+	if (ret)
+		debug("Failed to set mac address from OTP: %d\n", ret);
+
+	return ret;
 }
 
 static int setup_serial_number(void)

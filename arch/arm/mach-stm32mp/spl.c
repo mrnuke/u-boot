@@ -181,6 +181,7 @@ void stm32_init_tzc_for_optee(void)
 
 void spl_board_prepare_for_optee(void *fdt)
 {
+	stm32_fdt_setup_mac_addr(fdt);
 	stm32_init_tzc_for_optee();
 }
 

@@ -47,7 +47,10 @@ void get_soc_name(char name[SOC_NAME_SIZE]);
 /* return boot mode */
 u32 get_bootmode(void);
 
+/* Set 'ethaddr' env variable with MAC from OTP (useful for u-boot proper) */
 int setup_mac_address(void);
+/* Patch the first 'ethernet' node of FDT with MAC from OTP (useful for SPL) */
+int stm32_fdt_setup_mac_addr(void *fdt);
 
 /* board power management : configure vddcore according OPP */
 void board_vddcore_init(u32 voltage_mv);
