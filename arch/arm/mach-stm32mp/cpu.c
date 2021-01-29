@@ -564,6 +564,29 @@ static void setup_boot_mode(void)
 	clrsetbits_le32(TAMP_BOOT_CONTEXT, TAMP_BOOT_FORCED_MASK, BOOT_NORMAL);
 }
 
+static int stm32_read_otp_mac(uint8_t enetaddr[ARP_HLEN])
+{
+	struct udevice *dev;
+	int ret, i;
+	u32 otp[2];
+
+
+	ret = uclass_get_device_by_driver(UCLASS_MISC,
+					  DM_DRIVER_GET(stm32mp_bsec),
+					  &dev);
+	if (ret)
+		return ret;
+
+	ret = misc_read(dev, STM32_BSEC_SHADOW(BSEC_OTP_MAC), otp, sizeof(otp));
+	if (ret < 0)
+		return ret;
+
+	for (i = 0; i < ARP_HLEN; i++)
+		enetaddr[i] = ((uint8_t *)&otp)[i];
+
+	return 0;
+}
+
 /*
  * If there is no MAC address in the environment, then it will be initialized
  * (silently) from the value in the OTP.
@@ -572,28 +595,15 @@ __weak int setup_mac_address(void)
 {
 #if defined(CONFIG_NET)
 	int ret;
-	int i;
-	u32 otp[2];
 	uchar enetaddr[6];
-	struct udevice *dev;
 
 	/* MAC already in environment */
 	if (eth_env_get_enetaddr("ethaddr", enetaddr))
 		return 0;
 
-	ret = uclass_get_device_by_driver(UCLASS_MISC,
-					  DM_DRIVER_GET(stm32mp_bsec),
-					  &dev);
-	if (ret)
-		return ret;
-
-	ret = misc_read(dev, STM32_BSEC_SHADOW(BSEC_OTP_MAC),
-			otp, sizeof(otp));
+	ret = stm32_read_otp_mac(enetaddr);
 	if (ret < 0)
 		return ret;
-
-	for (i = 0; i < 6; i++)
-		enetaddr[i] = ((uint8_t *)&otp)[i];
 
 	if (!is_valid_ethaddr(enetaddr)) {
 		log_err("invalid MAC address in OTP %pM\n", enetaddr);
