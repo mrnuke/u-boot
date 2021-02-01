@@ -19,6 +19,7 @@
 #include <asm/arch/sys_proto.h>
 #include <mach/tzc.h>
 #include <linux/libfdt.h>
+#include <tee/optee.h>
 
 u32 spl_boot_device(void)
 {
@@ -182,6 +183,7 @@ void stm32_init_tzc_for_optee(void)
 void spl_board_prepare_for_optee(void *fdt)
 {
 	stm32_fdt_setup_mac_addr(fdt);
+	optee_copy_fdt_nodes(fdt);
 	stm32_init_tzc_for_optee();
 }
 
