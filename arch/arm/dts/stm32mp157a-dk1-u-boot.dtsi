@@ -45,6 +45,7 @@
 		optee {
 			compatible = "linaro,optee-tz";
 			method = "smc";
+			u-boot,dm-pre-reloc;
 		};
 	};
 
