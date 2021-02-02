@@ -214,7 +214,7 @@ static int rsa_pem_get_priv_key(const char *keydir, const char *name,
 		return -ENOENT;
 	}
 
-	if (!PEM_read_PrivateKey(f, evpp, NULL, path)) {
+	if (!PEM_read_PrivateKey(f, evpp, NULL, NULL)) {
 		rsa_err("Failure reading private key");
 		fclose(f);
 		return -EPROTO;
