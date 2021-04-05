@@ -8,25 +8,6 @@
 #include "stm32mp15-ddr3-1x4Gb-1066-binG.dtsi"
 
 / {
-	signature {
-		u-boot,dm-pre-reloc;
-		required-mode = "all";
-
-		default-key {
-			u-boot,dm-pre-reloc;
-			required = "conf";
-			algo = "sha256,ecdsa";
-			ecdsa,curve = "prime256v1";
-			ecdsa,x-point = <0x1faeb5ea 0xc8876d30 0x1049e47c
-					 0xc0263989 0x5a1cfbd5 0xf4bed4a2
-					 0xd5e22574 0xf8fefb98>;
-			ecdsa,y-point = <0xe0dfcfb6 0x331d932b 0x2804d2b
-					 0x5d371ad4 0x3cad64e 0xf6880fc5
-					 0x6b01a1ca 0x2eb8caa1>;
-
-		};
-	};
-
 	aliases {
 		i2c3 = &i2c4;
 		mmc0 = &sdmmc1;
