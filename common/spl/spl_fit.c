@@ -20,6 +20,11 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
+#undef _DEBUG
+#define _DEBUG 1
+#undef debug
+#define debug printf
+
 #ifndef CONFIG_SPL_LOAD_FIT_APPLY_OVERLAY_BUF_SZ
 #define CONFIG_SPL_LOAD_FIT_APPLY_OVERLAY_BUF_SZ (64 * 1024)
 #endif

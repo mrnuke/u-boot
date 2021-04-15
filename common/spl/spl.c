@@ -6,6 +6,8 @@
  * Aneesh V <aneesh@ti.com>
  */
 
+#define DEBUG 1
+
 #include <common.h>
 #include <bloblist.h>
 #include <binman_sym.h>
@@ -30,6 +32,7 @@
 #include <mapmem.h>
 #include <dm/root.h>
 #include <linux/compiler.h>
+#include <linux/delay.h>
 #include <fdt_support.h>
 #include <bootcount.h>
 #include <wdt.h>
@@ -748,7 +751,8 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 #endif
 #if CONFIG_IS_ENABLED(OPTEE)
 	case IH_OS_TEE:
-		debug("Jumping to U-Boot via OP-TEE\n");
+		printf("Jumping to U-Boot via OP-TEE (fdt = %p), \n",
+		      spl_image.fdt_addr);
 		spl_board_prepare_for_optee(spl_image.fdt_addr);
 		spl_optee_entry(NULL, NULL, spl_image.fdt_addr,
 				(void *)spl_image.entry_point);
@@ -762,7 +766,9 @@ void board_init_r(gd_t *dummy1, ulong dummy2)
 #endif
 #ifdef CONFIG_SPL_OS_BOOT
 	case IH_OS_LINUX:
-		debug("Jumping to Linux\n");
+		debug("Jumping to Linux FDT=%p arg=%p\n",
+			spl_image.fdt_addr, spl_image.arg);
+		mdelay(4000);
 #if defined(CONFIG_SYS_SPL_ARGS_ADDR)
 		spl_fixup_fdt((void *)CONFIG_SYS_SPL_ARGS_ADDR);
 #endif

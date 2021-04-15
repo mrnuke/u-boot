@@ -18,6 +18,8 @@
 #include <linux/compiler.h>
 #include <asm/mach-types.h>
 
+#define _DEBUG 1
+
 #ifndef CONFIG_SPL_DM
 /* Pointer to as well as the global data structure for SPL */
 DECLARE_GLOBAL_DATA_PTR;
