@@ -28,7 +28,6 @@ struct fdt_region;
 #include <linux/kconfig.h>
 
 /* new uImage format support enabled on host */
-#define CONFIG_FIT_VERBOSE	1 /* enable fit_format_{error,warning}() */
 #define CONFIG_FIT_RSASSA_PSS 1
 
 #define IMAGE_ENABLE_IGNORE	0
@@ -1475,7 +1474,7 @@ int fit_image_cipher_get_algo(const void *fit, int noffset, char **algo);
 
 struct cipher_algo *image_get_cipher_algo(const char *full_name);
 
-#ifdef CONFIG_FIT_VERBOSE
+#if CONFIG_IS_ENABLED(FIT_VERBOSE)
 #define fit_unsupported(msg)	printf("! %s:%d " \
 				"FIT images not supported for '%s'\n", \
 				__FILE__, __LINE__, (msg))
@@ -1487,7 +1486,7 @@ struct cipher_algo *image_get_cipher_algo(const char *full_name);
 #else
 #define fit_unsupported(msg)
 #define fit_unsupported_reset(msg)
-#endif /* CONFIG_FIT_VERBOSE */
+#endif /* FIT_VERBOSE */
 #endif /* CONFIG_FIT */
 
 #if !defined(USE_HOSTCC)
