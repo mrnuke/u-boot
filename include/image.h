@@ -47,20 +47,12 @@ struct fdt_region;
 #include <linux/libfdt.h>
 #include <fdt_support.h>
 # ifdef CONFIG_SPL_BUILD
-#  ifdef CONFIG_SPL_CRC32
-#   define IMAGE_ENABLE_CRC32	1
-#  endif
 #  ifdef CONFIG_SPL_MD5
 #   define IMAGE_ENABLE_MD5	1
 #  endif
 # else
-#  define IMAGE_ENABLE_CRC32	1
 #  define IMAGE_ENABLE_MD5	1
 # endif
-
-#ifndef IMAGE_ENABLE_CRC32
-#define IMAGE_ENABLE_CRC32	0
-#endif
 
 #ifndef IMAGE_ENABLE_MD5
 #define IMAGE_ENABLE_MD5	0
