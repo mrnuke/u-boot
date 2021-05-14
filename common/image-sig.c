@@ -120,6 +120,13 @@ struct crypto_algo *image_get_crypto_algo(const char *full_name)
 			crypto_algos[i].name += gd->reloc_off;
 			crypto_algos[i].verify += gd->reloc_off;
 		}
+
+		crypto = ll_entry_start(struct crypto_algo, cryptos);
+		end = ll_entry_end(struct crypto_algo, cryptos);
+		for (; crypto < end; crypto++) {
+			crypto->name += gd->reloc_off;
+			crypto->verify += gd->reloc_off;
+		}
 	}
 #endif
 
