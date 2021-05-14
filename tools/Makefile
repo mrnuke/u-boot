@@ -57,8 +57,9 @@ hostprogs-$(CONFIG_FIT_SIGNATURE) += fit_info fit_check_sign
 
 hostprogs-$(CONFIG_CMD_BOOTEFI_SELFTEST) += file2include
 
-FIT_OBJS-$(CONFIG_FIT) := fit_common.o fit_image.o image-host.o common/image-fit.o
-FIT_SIG_OBJS-$(CONFIG_FIT_SIGNATURE) := common/image-sig.o common/image-fit-sig.o
+FIT_OBJS-$(CONFIG_FIT) := image-sig-host.o fit_common.o fit_image.o \
+			image-host.o common/image-fit.o
+FIT_SIG_OBJS-$(CONFIG_FIT_SIGNATURE) := common/image-fit-sig.o
 FIT_CIPHER_OBJS-$(CONFIG_FIT_CIPHER) := common/image-cipher.o
 
 # The following files are synced with upstream DTC.
