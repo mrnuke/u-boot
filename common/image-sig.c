@@ -51,10 +51,6 @@ struct checksum_algo checksum_algos[] = {
 
 };
 
-struct crypto_algo crypto_algos[] = {
-	{
-};
-
 struct padding_algo padding_algos[] = {
 	{
 		.name = "pkcs-1.5",
