@@ -1268,6 +1268,10 @@ struct checksum_algo {
 			 int region_count, uint8_t *checksum);
 };
 
+/* Declare a new U-Boot hash algorithm handler */
+#define U_BOOT_HASH_ALGO(__name)						\
+ll_entry_declare(struct checksum_algo, __name, hashish)
+
 struct crypto_algo {
 	const char *name;		/* Name of algorithm */
 	const int key_len;

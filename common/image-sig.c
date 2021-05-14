@@ -66,6 +66,7 @@ struct padding_algo padding_algos[] = {
 
 struct checksum_algo *image_get_checksum_algo(const char *full_name)
 {
+	struct checksum_algo *hash, *end;
 	int i;
 	const char *name;
 
@@ -87,6 +88,15 @@ struct checksum_algo *image_get_checksum_algo(const char *full_name)
 		if (!strncmp(name, full_name, strlen(name)) &&
 		    full_name[strlen(name)] == ',')
 			return &checksum_algos[i];
+	}
+
+	hash = ll_entry_start(struct checksum_algo, hashish);
+	end = ll_entry_end(struct checksum_algo, hashish);
+	for (; hash < end; hash++) {
+		/* Make sure names match and next char is a comma */
+		if (!strncmp(hash->name, full_name, strlen(name)) &&
+			full_name[strlen(hash->name)] == ',')
+			return hash;
 	}
 
 	return NULL;
