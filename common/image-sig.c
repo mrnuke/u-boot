@@ -51,10 +51,6 @@ struct checksum_algo checksum_algos[] = {
 
 };
 
-struct crypto_algo crypto_algos[] = {
-	{
-};
-
 struct padding_algo padding_algos[] = {
 	{
 		.name = "pkcs-1.5",
@@ -107,10 +103,6 @@ struct crypto_algo *image_get_crypto_algo(const char *full_name)
 
 	if (!done) {
 		done = true;
-		for (i = 0; i < ARRAY_SIZE(crypto_algos); i++) {
-			crypto_algos[i].name += gd->reloc_off;
-			crypto_algos[i].verify += gd->reloc_off;
-		}
 
 		crypto = ll_entry_start(struct crypto_algo, cryptos);
 		end = ll_entry_end(struct crypto_algo, cryptos);
@@ -126,11 +118,6 @@ struct crypto_algo *image_get_crypto_algo(const char *full_name)
 	if (!name)
 		return NULL;
 	name += 1;
-
-	for (i = 0; i < ARRAY_SIZE(crypto_algos); i++) {
-		if (!strcmp(crypto_algos[i].name, name))
-			return &crypto_algos[i];
-	}
 
 	crypto = ll_entry_start(struct crypto_algo, cryptos);
 	end = ll_entry_end(struct crypto_algo, cryptos);
